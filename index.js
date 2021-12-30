@@ -27,21 +27,21 @@ const markdown = require( "markdown" ).markdown
 
 const fs = require('fs')
 
+var page = fs.readFileSync("html/tb.html", 'utf8')
+console.log("reading html...")
+page+= "<style>"+fs.readFileSync("css/style.css", 'utf8')+"</style>"
+console.log("reading css...")
+
 
 server.on('request', (request, response) => {
 	response.setHeader('Content-Type', 'text/html') 
-	var page = fs.readFileSync("html/tb.html", 'utf8')
-	console.log("reading html...")
-	page+= "<style>"+fs.readFileSync("css/style.css", 'utf8')+"</style>"
-	console.log("reading css...")
 	const lang = Intl.DateTimeFormat().resolvedOptions().locale
   
 	if (request.url === '/') {
 		response.write(page)
 	}
 	else if (request.url === '/coucou') {
-		page+=markdown.toHTML('#Hello world!')
-		response.write(page)
+		response.write(page+markdown.toHTML('#Hello world!'))
 		console.log("end")
 	}
 	response.end()
