@@ -24,27 +24,55 @@
 
 const server = require('http').createServer()
 const markdown = require( "markdown" ).markdown
-
 const fs = require('fs')
 
-var page = fs.readFileSync("html/tb.html", 'utf8')
-console.log("reading html...")
-page+= "<style>"+fs.readFileSync("css/style.css", 'utf8')+"</style>"
-console.log("reading css...")
+class Template {
+	constructor (html, css) {
+		this.html = fs.readFileSync(html, 'utf8')
+		console.log("reading html...")
+		this.css = fs.readFileSync(css, 'utf8')
+		console.log("reading css...")
+		this.md = null
+		this.mdexists = false
+		this.class = ""
+	}
+	async setMD(path) { 
+		try {
+			await fs.access(path)
+			this.md = fs.readFileSync(path, 'utf8')
+			console.log("reading MD at "+path)
+			this.mdexists = true
+		} catch {
+			this.md = fs.readFileSync("md/404.md", 'utf8')
+			console.log("404")
+			this.mdexists = false
+		}
+	}
+	setClass(_class_) {
+		this.class = _class_
+	}
+	getPage(response){
+		if (!this.mdxists) {
+			response.statusCode = 404
+		}
+		return this.html + "<style>" + this.css + "</style" + "<div class=\"" + this.class + "\">"+markdown.toHTML(this.md)
+	}
+}
+
+const page = new Template("html/tb.html", "css/style.css")
 
 
 server.on('request', (request, response) => {
 	response.setHeader('Content-Type', 'text/html') 
-	const lang = Intl.DateTimeFormat().resolvedOptions().locale
-  
-	if (request.url === '/') {
-		response.write(page)
+	const lang = Intl.DateTimeFormat().resolvedOptions().locale.slice(0,2)
+	
+  	if (request.url != '/') {
+		page.setMD("md/"+request.url+lang+".md")
 	}
-	else if (request.url === '/coucou') {
-		response.write(page+markdown.toHTML('#Hello world!'))
-		console.log("end")
+	else {
+		page.setMD("md/index.md")
 	}
-	response.end()
+  	response.end(page.getPage(response))
 })
 
 server.listen(4000)
