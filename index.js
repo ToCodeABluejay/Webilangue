@@ -37,12 +37,11 @@ class Template {
 		this.class = ""
 	}
 	async setMD(path) { 
-		try {
-			await fs.access(path)
+		if (fs.existsSync(path)) {
 			this.md = fs.readFileSync(path, 'utf8')
 			console.log("reading MD at "+path)
 			this.mdexists = true
-		} catch {
+		} else {
 			this.md = fs.readFileSync("md/404.md", 'utf8')
 			console.log("404")
 			this.mdexists = false
@@ -55,7 +54,7 @@ class Template {
 		if (!this.mdxists) {
 			response.statusCode = 404
 		}
-		return this.html + "<style>" + this.css + "</style" + "<div class=\"" + this.class + "\">"+markdown.toHTML(this.md)
+		return this.html + "<style>" + this.css + "</style>" + "<div class=\"" + this.class + "\">"+markdown.toHTML(this.md)+"</div>"
 	}
 }
 
@@ -65,12 +64,12 @@ const page = new Template("html/tb.html", "css/style.css")
 server.on('request', (request, response) => {
 	response.setHeader('Content-Type', 'text/html') 
 	const lang = Intl.DateTimeFormat().resolvedOptions().locale.slice(0,2)
-	
+	page.setClass("body")
   	if (request.url != '/') {
-		page.setMD("md/"+request.url+lang+".md")
+		page.setMD("md/"+request.url+"."+lang+".md")
 	}
 	else {
-		page.setMD("md/index.md")
+		page.setMD("md/index."+lang+".md")
 	}
   	response.end(page.getPage(response))
 })
