@@ -26,7 +26,7 @@ const server = require('http').createServer()
 const markdown = require( "markdown" ).markdown
 const fs = require('fs')
 const deepcopy = require('lodash.clonedeep')
-
+const supported_languages = ["en", "fr"]
 /*class Template {
 	constructor (html, css) {
 		this.html = fs.readFileSync(html, 'utf8')
@@ -96,7 +96,12 @@ class HTMLDoc {
 
 server.on('request', (request, response) => {
 	response.setHeader('Content-Type', 'text/html') 
-	const lang = Intl.DateTimeFormat().resolvedOptions().locale.slice(0,2)
+	const blang = Intl.DateTimeFormat().resolvedOptions().locale.slice(0,2)
+	if supported_languages.includes(blang) {
+		const lang = blang
+	} else {
+		const lang = "en"
+	}	//Defaults to English
 	page.setClass("body")
   	if (request.url != '/') {
 		page.setMD("md/"+request.url+"."+lang+".md")
