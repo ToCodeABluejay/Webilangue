@@ -72,6 +72,9 @@ class HTMLElem {
 	}
 }
 
+HTMElem.prototype.toString = function () {
+}
+
 class HTMLDoc {
 	constructor(head, body) {
 	}
