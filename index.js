@@ -25,8 +25,9 @@
 const server = require('http').createServer()
 const markdown = require( "markdown" ).markdown
 const fs = require('fs')
+const deepcopy = require('lodash.clonedeep')
 
-class Template {
+/*class Template {
 	constructor (html, css) {
 		this.html = fs.readFileSync(html, 'utf8')
 		console.log("reading html...")
@@ -58,7 +59,39 @@ class Template {
 	}
 }
 
-const page = new Template("html/tb.html", "css/style.css")
+const page = new Template("html/tb.html", "css/style.css")*/
+
+class HTMLElem {
+	constructor(elem, attr, se) {
+	}
+	add_attr(attr) {
+	}
+	set_attr(attr) {
+	}
+	set_middle(middle) {
+	}
+}
+
+class HTMLDoc {
+	constructor(head, body) {
+	}
+	get_css(css) {
+	}
+	set_head(head) {
+	}
+	add_head(head) {
+	}
+	get_head(head) {
+	}
+	set_body(body) {
+	}
+	add_body(body) {
+	}
+	get_body(body) {
+	}
+	get_response() {
+	}
+}
 
 
 server.on('request', (request, response) => {
