@@ -62,13 +62,20 @@ const supported_languages = ["en", "fr"]
 const page = new Template("html/tb.html", "css/style.css")*/
 
 class HTMLElem {
-	constructor(elem, attr, se) {
+	constructor(elem, attr, elem_cont) {
+		this.elem = elem
+		this.attr = attr
+		this.mid = elem_cont
 	}
 	add_attr(attr) {
+		this.attr = Array[this.attr]
+		this.attr.push(attr)
 	}
 	set_attr(attr) {
+		this.attr = Array[attr]
 	}
 	set_middle(middle) {
+		this.mid = middle
 	}
 }
 
