@@ -64,11 +64,10 @@ const page = new Template("html/tb.html", "css/style.css")*/
 class HTMLElem {
 	constructor(elem, attr, elem_cont) {
 		this.elem = elem
-		this.attr = attr
+		this.attr = Array[attr] //We want to keep this as an array at all times
 		this.mid = elem_cont
 	}
 	add_attr(attr) {
-		this.attr = Array[this.attr]
 		this.attr.push(attr)
 	}
 	set_attr(attr) {
@@ -83,21 +82,37 @@ HTMElem.prototype.toString = function () {
 }
 
 class HTMLDoc {
+	/* This class is designed to use the previously
+	 * defined 'HTMLElem' class in order to construct
+	 * the final document. Therefore, it expects
+	 * these to be used in the head and in the body,
+	 * so we treat them as array to allow us to
+	 * manipulate them dynamically, adding and removing
+	 * as needed and/or desired.
+	 */
 	constructor(head, body) {
+		this.head = Array[head]
+		this.body = Array[body]
 	}
 	get_css(css) {
 	}
 	set_head(head) {
+		this.head = Array[head]
 	}
 	add_head(head) {
+		this.head.push(head)
 	}
 	get_head(head) {
+		//TODO: Create an iterative loop which can return a string seperated by spaces, not commas
 	}
 	set_body(body) {
+		this.body = Array[body]
 	}
 	add_body(body) {
+		this.body.push(body)
 	}
 	get_body(body) {
+		//TODO: Same principle here
 	}
 	get_response() {
 	}
