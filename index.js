@@ -102,8 +102,11 @@ class HTMLDoc {
 	add_head(head) {
 		this.head.push(head)
 	}
-	get_head(head) {
-		//TODO: Create an iterative loop which can return a string seperated by spaces, not commas
+	get_head() {
+		let head = "";
+		for(let member in this.head) {
+			head += this.head[member]+" ";
+		}
 	}
 	set_body(body) {
 		this.body = Array[body]
@@ -111,8 +114,11 @@ class HTMLDoc {
 	add_body(body) {
 		this.body.push(body)
 	}
-	get_body(body) {
-		//TODO: Same principle here
+	get_body() {
+		let body = "";
+		for(let member in this.body) {
+			body += this.body[member]+" ";
+		}
 	}
 	get_response() {
 	}
